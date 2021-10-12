@@ -9,11 +9,15 @@ on:
         description: 'Deployable ref, commit or branch'
         required: true
       name:
-        description: 'Name of deployment. Defaults to branch name.'
+        description: 'Name of deployment/docker tag.'
         required: false
 jobs:
+  validate:
+    runs-on: ubuntu-20.04
+    steps:
+    -
   deploy:
     runs-on: ubuntu-20.04
     steps:
-      - run: echo Deploying ${{ github.event.inputs.ref }} to ${{ github.event.inputs.name }}@${{ github.event.inputs.env }}
+    - run: echo Deploying ${{ github.event.inputs.ref }} to ${{ github.event.inputs.name }}@${{ github.event.inputs.env }}
 
