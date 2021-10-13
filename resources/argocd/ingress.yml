@@ -1,5 +1,5 @@
 # ingress.yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: argocd-server-ingress
@@ -10,15 +10,20 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    external-dns.alpha.kubernetes.io/hostname: deployments.lwille.xyz
 spec:
   rules:
   - http:
       paths:
       - backend:
-          serviceName: argocd-server
-          servicePort: https
-    host: argocd.local
+          service:
+            name: argocd-server
+            port:
+              name: https
+        pathType: Prefix
+        path: /
+    host: deployments.lwille.xyz
   tls:
   - secretName: https-cert
     hosts:
-    - argocd.local
+    - deployments.lwille.xyz
